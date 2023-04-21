@@ -46,4 +46,5 @@
    Информацию об адресе хоста ПК см. в Таблице адресации.
    ```
 
-![Address tables](https://github.com/SalminKHV/OTUS/issues/2#issue-1669325798)
+3. Сконфигурировать оборудование в соответствии с таблицами:![image](https://user-images.githubusercontent.com/130359715/233513879-dd757261-35c2-4cb9-a93a-7c6ef89df3f4.png)
+
