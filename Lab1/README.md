@@ -46,4 +46,4 @@
    Информацию об адресе хоста ПК см. в Таблице адресации.
    ```
 
-![Address tables](https://user-images.githubusercontent.com/130359715/232217143-9a6fb74d-f7f9-4e08-929d-1b98acfab67b.jpg)
+![Address tables](https://github.com/SalminKHV/OTUS/issues/2#issue-1669325798)
