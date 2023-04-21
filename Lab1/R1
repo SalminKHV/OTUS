@@ -18,7 +18,6 @@ enable password 7 094F42080A16
 no aaa new-model
 !
 !
-!
 bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
 mmi polling-interval 60
 no mmi auto-configure
