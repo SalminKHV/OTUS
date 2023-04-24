@@ -74,36 +74,38 @@
 
     
 
-1. #### Произведем первоначальную настройку
+    1. ### Произведем первоначальную настройку
 
-   На наших активных устройствах R1, S1, S2, настроим доступ и авторизацию по консоли и по VTY, установим пароли, время и приветственный баннер, а также отключим поиск DNS и установим имя устройства. Произведем настройку на примере маршрутизатора R1(на других устройствах настройки аналогичные):
+    На наших активных устройствах R1, S1, S2, настроим доступ и авторизацию по консоли и по VTY, установим пароли, время и приветственный баннер, а также отключим поиск DNS и установим имя устройства. Произведем настройку на примере маршрутизатора R1(на других устройствах настройки аналогичные):
 
-   #### Команды первоначальной настройки устройств: 
+    
 
-   Router>en  
-   Router#conf t  
-   Enter configuration commands, one per line.  End with CNTL/Z.  
-   Router(config)#hostname R1  
-   R1(config)#no ip domain lookup  
-   R1(config)#line console 0  
-   R1(config-line)#pass cisco  
-   R1(config-line)#login  
-   R1(config-line)#ex  
-   R1(config)#line vty 0 4  
-   R1(config-line)#pass cisco  
-   R1(config-line)#login  
-   R1(config-line)#exi  
-   R1(config)#enable pass class  
-   R1(config)#service password-encryption  
-   R1(config)#banner motd #  
-   Enter TEXT message.  End with the character '#'.  
-   Unauthoririd access is strictly prohibited#  
-   R1(config)#  
-   R1(config)#clock timezone UTC 11  
-   R1(config)#  
-   *Apr 23 22:43:24.648: %SYS-6-CLOCKUPDATE: System clock has been updated from   
+    ##### Команды первоначальной настройки устройств:
 
-   22:43:24 UTC Sun Apr 23 2023 to 09:43:24 UTC Mon Apr 24 2023, configured from console by console.      
+    Router>en  
+    Router#conf t  
+    Enter configuration commands, one per line.  End with CNTL/Z.  
+    Router(config)#hostname R1  
+    R1(config)#no ip domain lookup  
+    R1(config)#line console 0  
+    R1(config-line)#pass cisco  
+    R1(config-line)#login  
+    R1(config-line)#ex  
+    R1(config)#line vty 0 4  
+    R1(config-line)#pass cisco  
+    R1(config-line)#login  
+    R1(config-line)#exi  
+    R1(config)#enable pass class  
+    R1(config)#service password-encryption  
+    R1(config)#banner motd #  
+    Enter TEXT message.  End with the character '#'.  
+    Unauthoririd access is strictly prohibited#  
+    R1(config)#  
+    R1(config)#clock timezone UTC 11  
+    R1(config)#  
+    *Apr 23 22:43:24.648: %SYS-6-CLOCKUPDATE: System clock has been updated from   
+
+    22:43:24 UTC Sun Apr 23 2023 to 09:43:24 UTC Mon Apr 24 2023, configured from console by console.      
 
 2. ###### Настройка роутера R1:
 
