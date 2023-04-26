@@ -198,13 +198,17 @@ S2(config-if)#int e0/0
 S2(config-if)#sw m a  
 S2(config-if)#sw a vl 7  
 
-##### 5. Настройки коспьютеров:
+#### 5. Настройки компьютеров:
 
 ПРоизведем настройки VPC-A и VPC-B, настроив их IP- адреса, в соответствии с [таблицей адресации](#Сконфигурировать оборудование в соответствии с таблицами:)
 
-VPC-A ![VPC-A](https://user-images.githubusercontent.com/130359715/234719730-09380ea5-759f-4f7e-acc7-bbbab009ffce.PNG)
+VPC-A 
 
-VPC-B![image](https://user-images.githubusercontent.com/130359715/234719348-5079eec9-07ae-46ea-82e4-8a5974be60c8.png)
+![VPC-A](https://user-images.githubusercontent.com/130359715/234719730-09380ea5-759f-4f7e-acc7-bbbab009ffce.PNG)
+
+VPC-B
+
+![image](https://user-images.githubusercontent.com/130359715/234719348-5079eec9-07ae-46ea-82e4-8a5974be60c8.png)
 
 
 
