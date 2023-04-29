@@ -48,11 +48,13 @@
 
 **#line console 0**
 
-перейдя к настройке консольного канала, сразу настроим **"logging synchronous"** командой **S1(config-line)#logging synchronous**
+перейдя к настройке консольного канала, сразу настроим **"logging synchronous"** командой    
+
+**S1(config-line)#logging synchronous**
 
 **#password cisco**
 
-**#login**
+**#login**w
 
 **#line vty 0 4**
 
@@ -109,4 +111,46 @@
 ![image](https://user-images.githubusercontent.com/130359715/235075614-b565edd7-fb4b-48b0-9888-44bd6ad4228f.png)
 
 ##### Шаг 3 Включим порты e0/0 и e0/2 на всех коммутаторах:
+
+S1:
+
+![image](https://user-images.githubusercontent.com/130359715/235278077-e1f8fbec-4ef7-456f-ab3d-95353d5131bf.png)
+
+S2:
+
+![image](https://user-images.githubusercontent.com/130359715/235278162-956549bb-670a-41e1-a917-b145274423f1.png)
+
+S3:
+
+![image](https://user-images.githubusercontent.com/130359715/235278202-41d2bbef-af85-47ee-8f1b-2f420ab13004.png)
+
+##### Шаг 4 Отобразим данные протокола spanning-tree:
+
+S1:
+
+![image](https://user-images.githubusercontent.com/130359715/235278337-c811ba46-374e-4f58-9b63-27e4099cda44.png)
+
+S2:
+
+![image](https://user-images.githubusercontent.com/130359715/235278422-07b806f6-f2ae-4c3d-bb13-5e437a1dd6df.png)
+
+
+
+S3:
+
+![image](https://user-images.githubusercontent.com/130359715/235278593-6d48a9ac-e04f-44b3-82a1-ef72d6e3be0c.png) 
+
+
+
+
+
+##### Ответим на вопросы, с учетом поступившей информации
+
+
+
+![image](https://user-images.githubusercontent.com/130359715/235283358-b4dc7d14-3337-4aa6-b0bc-b847e839fa09.png)
+
+
+
+
 
