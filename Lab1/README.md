@@ -121,7 +121,7 @@ R1(config-subif)#int e0/1.4
 R1(config-subif)#ip add 192.168.4.1 255.255.255.0  
 R1(config-subif)#encapsulation dot1Q 4  
 R1(config-subif)#int e0/1.8  
-R1(config-subif)#encapsulation dot1Q 8  
+R1(config-subif)#encapsulation dot1Q 8 native  
 R1#copy running-config startup-config  
 Destination filename [startup-config]?  
 Building configuration...  
