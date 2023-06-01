@@ -87,3 +87,40 @@
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/a5d4232c-ea03-47d3-b574-a184a2a398ca)
 
 Произведем настройку Sub-интерфейсов роутера R1:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/d91d8f1c-74d8-41b2-9a00-4b24faefc082)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/3ca61f3c-ab28-4120-a9b8-7a61ad180060)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/9d742451-6ae5-4047-8220-34c3e0df7b55)
+
+​				Мы назначили активировали порт Gi0/1, создали Sub-интерфейсы и подписали их, включили инкапсуляцию и назначили ip-адреса интерфейсам, согласно [таблице адресации.]()
+
+​				Настроим интерфейс Gi0/0 ро роутере R1:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/08e0b0ad-a656-4f4b-8b00-7652745e6959)
+
+​				Установим шлюз по умолчанию для роутера R1 и пропишем маршрут для удаленной сети:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/ba2ef1ec-e961-4f61-87a5-cd43392af382)
+
+​				Настроим роутер R2, назначим ip-адрес на порту Gi0/0Ю нашзачим шлюз по умолчанию и пропишем маршруты для удаленных подсетей. Проверим что связность есть. Сохраним конфиг.
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/ae46d4ef-b696-4860-b393-ac8c05ee1723)
+
+​				
+
+​				После первоначальной настройки коммутатора S1, создадим и настроим Vlan-ы:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/212eb5d9-4498-4221-a8cd-94fb2e940a60)
+
+​				Настроим Порты Gi0/1 и Gi0/3. Настроим транки, назначим шлюз по умолчанию, и пропишем маршрут по умолчанию на S1:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/ca1e001d-cf7a-4387-86b7-7cfd78118c4b)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/139c7aa5-496d-478c-835c-53f00b81a34b)
+
+
+
+
+
