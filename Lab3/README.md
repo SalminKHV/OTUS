@@ -8,7 +8,7 @@
 
 ##### 2. Таблица адресации и цели:
 
-![image](https://github.com/SalminKHV/OTUS/assets/130359715/b51a0740-1f5e-4457-b259-88b0aeac5e91)
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/e481a4a6-695e-4d13-9746-b694233c381e)
 
 ###### Цели:
 
@@ -27,8 +27,6 @@
 [Часть 2]()
 
 [Часть 3]()
-
-[Часть 4]()
 
 
 
