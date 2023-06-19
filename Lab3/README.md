@@ -24,9 +24,9 @@
 
 [Часть 1](https://github.com/SalminKHV/OTUS/tree/main/Lab3#%D1%87%D0%B0%D1%81%D1%82%D1%8C-1)
 
-[Часть 2]()
+[Часть 2](https://github.com/SalminKHV/OTUS/tree/main/Lab3#%D1%87%D0%B0%D1%81%D1%82%D1%8C-2)
 
-[Часть 3]()
+[Часть 3](https://github.com/SalminKHV/OTUS/tree/main/Lab3#%D1%87%D0%B0%D1%81%D1%82%D1%8C-3)
 
 
 
@@ -185,6 +185,8 @@
 Обновим настройки PC-A и проверим доступность порта Gi0/1 роутера R1:
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/13818da1-1c7d-4182-b60e-29fa64cab892)
+
+
 
 
 
