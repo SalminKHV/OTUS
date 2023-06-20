@@ -1,6 +1,6 @@
 ## DHCPv4/v6 и SLAAC 
 
-## [DHCPv6 и SLAAC]()
+## [DHCPv6 и SLAAC](https://github.com/SalminKHV/OTUS/tree/main/Lab3#dhcpv6-%D0%B8-slaac-1)
 
 ## DHCPv4
 
