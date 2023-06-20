@@ -1,5 +1,9 @@
 ## DHCPv4/v6 и SLAAC 
 
+## [DHCPv6 и SLAAC]()
+
+## DHCPv4
+
 
 
 ##### 1. Топология сети
@@ -223,3 +227,198 @@
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/3c6414be-b118-44da-83de-425a4eae42d5)
 
  
+
+## DHCPv6 и SLAAC
+
+##### 1. Топология сети
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/a52df14c-3ea1-428b-b423-f901bb30093a)
+
+##### 2. Таблица адресации и цели:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/1bfd5b38-6cb4-4828-829b-6a5b1fc54527)
+
+Динамическое назначение глобальных индивидуальных адресов IPv6 (GUA) можно настроить следующими тремя способами:
+• Автоконфигурация адресов без сохранения состояния (SLACC)
+• Протокол динамической конфигурации хоста без сохранения состояния для IPv6 (DHCPv6)
+• DHCPv6 с отслеживанием состояния
+
+
+
+#### Часть 1 
+
+Произведем первоначальные настройки роутеров R1 и R2 и коммутаторов S1, S2. т.к. первоначальные настройки на устройствах идентичны, проведем настройку на примере коммутатора S1.       
+
+Отключим поиск DNS командой **#no ip domain lookup**
+
+Присвоим имена устройствам, в соответствии со схемой **#hosname R1**
+
+Назначим пароль для доспупа в привилегированный режим:
+
+**#enable password class**
+
+Назначим пароль **cisco** в качестве паролей консоли и VTY и активируем вход:
+
+**#line console 0**
+
+перейдя к настройке консольного канала, сразу настроим **"logging synchronous"** командой    
+
+**S1(config-line)#logging synchronous**
+
+**#password cisco**
+
+**#login**
+
+**#line vty 0 4**
+
+**#password cisco**
+
+**#login**
+
+Зашифруем пароли в конфигурационном файле:
+
+**#service password-encription**
+
+Настроим баннерное сообщение командой **#banner motd 3**
+
+**"Unauthorized access is strictly prohibited" 3**
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/d784848b-f7e6-403c-a6e2-333e77fe3a65)
+
+
+
+Выключим не используемые порты и сохраним конфигурацию
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/fba18a0d-db0d-45be-b6b7-1b720cb2a017)
+
+Дополнительно на роутерах включим ipv6 unicast-routing
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/e65d5465-7ede-4ee3-b280-44ff3d356e5c)
+
+
+
+Настроим интерфейсы Gi0/0 и Gi0/1 на роутере R1:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/b26d33f1-609d-4a54-b791-521eec90cd14)
+
+Проверим настройки:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/20a4d8d9-ce14-49f7-9af0-67f8a4a6bcaa)
+
+Настроим интерфейсы Gi0/0 и Gi0/1 на роутере R2:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/03a53107-dcf8-4132-a2ef-a07fc75e53d3)
+
+Настроим маршруты на маршрутизаторах на встречные порты Gi0/0 роутеров R1 и R2, проверим доступность адреса порта G0/1 R2 с R1
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/8d975312-f391-4b40-a288-85fb12be4d51)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/79f7e34c-2623-4e39-b0d4-744f88d320c5)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/8e9b1d47-062a-4753-bcaa-ea6d459834e0)
+
+
+
+### Часть 2
+
+
+
+Посмотрим сетевые настройки компьютера
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/111a8d6a-9a9a-40a6-b942-1a6df0abd550)
+
+
+
+Откуда взялась часть адреса с идентификатором хоста?
+
+Путем автоматического формирования IPv6-адреса по стандарту EUI-64, методом сложения части адреса подсети(64 маски) и MAC-адреса устройства c добавлением символов FFFE и конвертацией 7 бита части "сложенного" mac-адреса на противоположный.
+
+### Часть 3
+
+Настроим DHCPv6 сервер на R1
+
+Проверим настройки компьютера перед настройкой сервера
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/dd1de308-9ffb-4fc6-a3a4-054be908c721)
+
+
+
+Создаим пул DHCP IPv6 на маршрутизаторе R1 с именем R1-STATELESS. Как часть этого пула назначим адрес DNS-сервера как 2001:db8:acad::1 и доменное имя как stateless.com
+
+R1(config)# **ipv6 dhcp pool R1-STATELESS**
+
+R1(config-dhcp)# **dns-server 2001:db8:acad::254**
+
+R1(config-dhcp)# **domain-name STATELESS.com**
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/a53b8b88-258e-470d-92f1-4d5e1fcb9581)
+
+
+
+Настроим интерфейс Gi0/1 на маршрутизаторе R1, чтобы предоставить флаг конфигурации OTHER для локальной сети маршрутизатора R1, и укажим только что созданный пул DHCP в качестве ресурса DHCP для этого интерфейса.
+
+R1(config)# **interface g0/1**
+
+R1(config-if)# **ipv6 nd other-config-flag**
+
+R1(config-if)# **ipv6 dhcp server R1-STATELESS**
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/cf2bc83a-d951-4164-af50-5e04dbff080c)
+
+
+
+Сохраним настройки на роутере и перезагрузим компьютер. Проверим новые настройки на ПК
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/042820db-3786-4daf-ab09-c41298ef416f)
+
+
+
+### Часть 4
+
+Создадим пул DHCPv6 на маршрутизаторе R1 для сети 2001:db8:acad:3:aaaa::/80. Это предоставит адреса для локальной сети, подключенной к интерфейсу Gi0/1 на маршрутизаторе R2. Как часть пула, установим DNS-сервер на 2001:db8:acad::254 и зададим доменное имя STATEFUL.com.
+
+R1(config)# **ipv6 dhcp pool STATEFUL**
+
+R1(config-dhcp)# **address prefix 2001:db8:acad:3:aaa::/80**
+
+R1(config-dhcp)# **dns-server 2001:db8:acad::254**
+
+R1(config-dhcp)# **domain-name STATEFUL.com**
+
+Назначим только что созданный пул DHCPv6 интерфейсу g0/0/0 на маршрутизаторе R1.
+
+R1(config)# **interface g0/0**
+
+R1(config-if)# **ipv6 dhcp server STATEFUL**
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/10f5bcbb-8bfb-4f89-8f2b-9a66461690ab)
+
+### Часть 5
+
+Проверим настройки на PC-B
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/9d7ace04-2313-49a5-b376-dc5635a5aae0)
+
+ 
+
+Настроим команду ipv6 dhcp relay на интерфейсе R2 Gi0/1, указав адрес назначения интерфейса Gi0/0 на R1. Также настройте команду manage-config-flag.
+
+R2(config)# **interface g0/1**
+
+R2(config-if)# **ipv6 nd managed-config-flag**
+
+R2(config-if)# **ipv6 dhcp relay destination 2001:db8:acad:2::1 g0/0**
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/36d4955e-86ba-4aa8-b77e-1569b8d050fb)
+
+Презагрузим PC-B и проверим новые настройки на компьютере, полученные от DHCP
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/49f07379-3464-4d4a-8156-88baa704a98f)
+
+Проверим доступность Gi0/1 на R1:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/d3dc57b1-6000-4e42-b805-e5d0a5c86d29)
+
+
+
+Пинги проходят, DHCP работает, свзяность сети обеспечена.
