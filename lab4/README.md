@@ -284,7 +284,7 @@ interface Vlan11
 
 
 
-Аналогично произведем настройку коммутатор SW4, а также настроим коммутаторы SW2 и SW3.  
+Аналогично произведем настройку коммутатор SW4, а также настроим коммутаторы SW2 и SW3.  Все неиспользуемые порты добавим во влан 99 и отключим физически. 
 
 Switch(config)#host SW3  
 SW3(config)#line con 0  
@@ -311,7 +311,13 @@ SW3(config-if-range)#sw tr all vl 11
 SW3(config-if-range)#sw tr native vl 99  
 SW3(config-if-range)#exi  
 SW3(config)#vlan 99  
-SW3(config-vlan)#name Parkink_Lot  
+SW3(config-vlan)#name Native  
+
+SW3(config)#vlan 100
+SW3(config-vlan)#name Parking_lot
+SW3(config-vlan)#exi
+SW3(config)#int ra e0/3, e1/0-3
+SW3(config-if-range)#sw a vl 100
 
 SW3(config)#ip default-gateway 100.1.11.1
 
@@ -322,9 +328,10 @@ SW3(config)#do copy run st
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/558b7266-7797-4d0d-ae25-23822428458d)
 
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/e7790a36-8220-4308-98af-cf77369a29ae)
 
 
 
 
 
-
+Добавить влан 100 нв sw4 и sw5 и неиспользуемые интерфейсы
