@@ -59,11 +59,12 @@
 | R13    | loopback | IPv4     | 100.1.0.13/32   | 100.1.0.13/32  | 100.1.0.0/24   | Loopback for Management                   |
 | R13    | e1/0     | IPv4     | 100.1.1.11/31   | 100.1.1.10/31  | 100.1.1.0/24   | R13 to R12                                |
 |        |          |          |                 |                |                |                                           |
-| SW5    | Vlan 7   | IPv4     | 100.1.7.3/24    | 100.1.7.0/24   | 100.1.0.0/16   | Vlan 2 for e0/0 to SW 2                   |
+| SW5    | Vlan 7   | IPv4     | 100.1.7.3/24    | 100.1.7.0/24   | 100.1.0.0/16   | Vlan 7 for e0/0 to SW 2                   |
 | SW5    | Vlan 11  | IPv4     | 100.1.11.3/24   | 100.1.11.0/24  | 100.1.0.0/16   | Vlan 11 for e0/1 to SW3                   |
 | SW5    | Vlan 9   | IPv4     | 100.1.1.25/31   | 100.1.1.24/31  | 100.1.0.0/16   | Vlan 9 for Ethechennel on e0/2-3 to SW4   |
-| SW5    | Vlan 5   | IPv4     | 100.1.1.23/24   | 100.1.1.22/24  | 100.1.0.0/16   | Vlan 5 for e1/0 to R13                    |
+| SW5    | Vlan 5   | IPv4     | 100.1.1.23/31   | 100.1.1.22/31  | 100.1.0.0/16   | Vlan 5 for e1/0 to R13                    |
 | SW5    | Vlan 2   | IPv4     | 100.1.1.19/31   | 100.1.1.18/31  | 100.1.1.0/24   | Vlan 2 for e1/1 to R12                    |
+| SW5    | Loopback | IPv4     | 100.1.0.5/32    | 100.1.0.5/32   | 100.1.0.0/24   | Loopback for Management                   |
 |        |          |          |                 |                |                |                                           |
 | SW4    | Vlan 11  | IPv4     | 100.1.11.2/24   | 100.1.11.0/24  | 100.1.0.0/16   | Vlan 11 for e0/0 to SW3                   |
 | SW4    | Vlan 7   | IPv4     | 100.1.7.2/24    | 100.1.7.0/24   | 100.1.0.0/16   | Vlan 7 for e0/1 to SW2                    |
@@ -171,6 +172,69 @@
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/03f52ee6-a749-4464-88aa-baee688b7aa5)
 
 
+
+
+
+Настроим коммутаторы SW4 и SW5 на примере SW5
+
+Содадим и подпишем Vlan's, создадим и назначим ip-адрес Loopback - интерфейсу, затем на Vlan-интерфейсах назначим IP-адреса, организуем Port-Channel по LACP и Настроим протокол hsrp для клиентских подсетей 100.1.11.0/24 и 100.1.7.0/24. 
+
+SW5(config)#vlan 2  
+SW5(config-vlan)#name for_e1/1 to_R12   
+
+SW5(config-vlan)#vlan 5  
+SW5(config-vlan)#name for e1/0 to R13  
+SW5(config-vlan)#vlan 7
+SW5(config-vlan)#name  for e0/0 to SW2  
+SW5(config-vlan)#vlan 9  
+SW5(config-vlan)#nameLACP e/02-3 to SW4  
+SW5(config-vlan)#vlan 11  
+SW5(config-vlan)#name for e0/1 to SW3    
+
+SW5(config)#int loopback 0  
+
+SW5(config-if)#ip address 100.1.0.5 255.255.255.255  
+
+SW5(config-if)#int vlan 2  
+
+SW5(config-if)#ip address 100.1.1.19 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+
+SW5(config-if)#int vlan 5  
+SW5(config-if)#ip add 100.2.2.23 255.255.255.254  
+
+SW5(config-if)#int ra e0/2-3  
+
+SW5(config-if-range)#channel-group 1 mode active  
+Creating a port-channel interface Port-channel 1  
+
+SW5(config-if-range)#no sh  
+SW5(config-if-range)#exi    
+
+SW5(config-if)#int vlan 7  
+SW5(config-if)#standby ver 2  
+SW5(config-if)#stand 1 ip 100.1.7.1  
+ SW5(config-if)#stand 1 priority 150  
+SW5(config-if)#stand 1 preempt  
+SW5(config-if)#no sh  
+SW5(config-if)#int vlan 11  
+SW5(config-if)#stand ver 2  
+SW5(config-if)#stand 1 ip 100.1.11.1  
+SW5(config-if)#no sh 
+
+SW5(config)#int vlan 7
+SW5(config-if)#ip add 100.1.7.3 255.255.255.0
+SW5(config)#int vlan 9
+SW5(config-if)#ip add 100.1.1.25 255.255.255.254
+% Warning: use /31 mask on non point-to-point interface cautiously
+SW5(config-if)#no sh
+SW5(config-if)#int vlan 11
+SW5(config-if)#ip add 100.1.11.3 255.255.255.0
+SW5(config-if)#no sh
+
+
+
+Теперь настроим физические интерфейсы коммутатора:
 
 
 
