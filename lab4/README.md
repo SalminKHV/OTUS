@@ -178,7 +178,7 @@
 
 Настроим коммутаторы SW4 и SW5 на примере SW5
 
-Содадим и подпишем Vlan's, создадим и назначим ip-адрес Loopback - интерфейсу, затем на Vlan-интерфейсах назначим IP-адреса, организуем Port-Channel по LACP и Настроим протокол hsrp для клиентских подсетей 100.1.11.0/24 и 100.1.7.0/24. 
+Соpдадим и подпишем Vlan's, создадим и назначим ip-адрес Loopback - интерфейсу, затем на Vlan-интерфейсах назначим IP-адреса, организуем Port-Channel по LACP и Настроим протокол hsrp для клиентских подсетей 100.1.11.0/24 и 100.1.7.0/24. 
 
 SW5(config)#vlan 2  
 SW5(config-vlan)#name for_e1/1 to_R12   
@@ -207,7 +207,12 @@ SW5(config-if)#ip add 100.2.2.23 255.255.255.254
 SW5(config-if-range)#no sh  
 SW5(config-if-range)#exi    
 
+Настроим HSRP для шлюза по умолчанию для устройств из пользовательских подсетей 100.1.9.0/24 и 100.1.11.0/24
+
 SW5(config-if)#int vlan 7  
+
+SW5(config-if)#ip add 100.1.7.3 255.255.255.0
+
 SW5(config-if)#standby ver 2  
 SW5(config-if)#stand 1 ip 100.1.7.1  
  SW5(config-if)#stand 1 priority 150  
@@ -220,16 +225,20 @@ SW5(config-if)#stand ver 2
 SW5(config-if)#stand 2 ip 100.1.11.1  
 SW5(config-if)#no sh 
 
-SW5(config)#int vlan 7  
-SW5(config-if)#ip add 100.1.7.3 255.255.255.0  
 SW5(config)#int vlan 9  
 SW5(config-if)#ip add 100.1.1.25 255.255.255.254  
 % Warning: use /31 mask on non point-to-point interface cautiously  
 SW5(config-if)#no sh  
 
+SW5(config)#vlan 100  
+SW5(config-vlan)#name Parking_Lot  
+SW5(config-vlan)#vlan 99  
+SW5(config-vlan)#name Native  
+SW5(config-vlan)#exi  
+SW5(config)#int ra e1/2-3  
+SW5(config-if-range)#sw a vl 100  
 
-
-Теперь настроим физические интерфейсы коммутатора:  
+Теперь настроим физические интерфейсы коммутатора, настроим port-channel:  
 
 
 
@@ -268,23 +277,9 @@ Creating a port-channel interface Port-channel 1
 
 SW5(config-if-range)#no sh  
 
-Настроим HSRP для шлюза поу молчанию для устройств из пользовательских подсетей 100.1.9.0/24 и 100.1.11.0/24  
+  
 
-interface Vlan7  
- ip address 100.1.7.3 255.255.255.0  
- standby version 2  
- standby 1 ip 100.1.7.1  
- standby 1 priority 150  
- standby 1 preempt   
-
-interface Vlan11  
- ip address 100.1.11.3 255.255.255.0  
- standby version 2  
- standby 2 ip 100.1.11.1  
-
-
-
-Аналогично произведем настройку коммутатор SW4, а также настроим коммутаторы SW2 и SW3.  Все неиспользуемые порты добавим во влан 99 и отключим физически. 
+Аналогично произведем настройку коммутатор SW4, а также настроим коммутаторы SW2 и SW3.  Все неиспользуемые порты добавим во vlan 100 и отключим физически. 
 
 Switch(config)#host SW3  
 SW3(config)#line con 0  
@@ -311,18 +306,18 @@ SW3(config-if-range)#sw tr all vl 11
 SW3(config-if-range)#sw tr native vl 99  
 SW3(config-if-range)#exi  
 SW3(config)#vlan 99  
-SW3(config-vlan)#name Native  
+SW3(config-vlan)#name Native    
 
-SW3(config)#vlan 100
-SW3(config-vlan)#name Parking_lot
-SW3(config-vlan)#exi
-SW3(config)#int ra e0/3, e1/0-3
-SW3(config-if-range)#sw a vl 100
+SW3(config)#vlan 100  
+SW3(config-vlan)#name Parking_lot  
+SW3(config-vlan)#exi  
+SW3(config)#int ra e0/3, e1/0-3  
+SW3(config-if-range)#sw a vl 100  
 
-SW3(config)#ip default-gateway 100.1.11.1
+SW3(config)#ip default-gateway 100.1.11.1  
 
-SW3(config)#ip route 0.0.0.0 0.0.0.0 100.1.11.1
-SW3(config)#do copy run st
+SW3(config)#ip route 0.0.0.0 0.0.0.0 100.1.11.1  
+SW3(config)#do copy run st  
 
 Проверим доступность соседних устройств SW4, SW5 и проверим правильность настройки hsrp ip 100.1.11.1:
 
