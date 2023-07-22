@@ -52,8 +52,8 @@
 | R12    | e1/0        | IPv4     | 100.1.1.10/31   | 100.1.1.10/31  | 100.1.1.0/24   | R12 to R15                                |
 | R12    | loopback    | IPv4     | 100.1.0.12/32   | 100.1.0.12/32  | 100.1.0.0/24   | Loopback for Management                   |
 |        |             |          |                 |                |                |                                           |
-| R13    | e0/3        | IPv4     | 100.1.1.3/31    | 100.1.1.2/31   | 100.1.1.0/24   | R13 to R15                                |
-| R13    | e0/2        | IPv4     | 100.1.1.9/31    | 100.1.1.9/31   | 100.1.1.0/24   | R13 to R14                                |
+| R13    | e0/3        | IPv4     | 100.1.1.3/31    | 100.1.1.2/31   | 100.1.1.0/24   | R13 to R14                                |
+| R13    | e0/2        | IPv4     | 100.1.1.9/31    | 100.1.1.9/31   | 100.1.1.0/24   | R13 to R15                                |
 | R13    | e0/1.4      | IPv4     | 100.1.1.20/31   | 100.1.1.20/31  | 100.1.1.0/24   | R13 to SW4                                |
 | R13    | e0/0.5      | IPv4     | 100.1.1.22/31   | 100.1.1.22/31  | 100.1.1.0/24   | R13 to SW5                                |
 | R13    | loopback    | IPv4     | 100.1.0.13/32   | 100.1.0.13/32  | 100.1.0.0/24   | Loopback for Management                   |
@@ -168,9 +168,11 @@
 
 
 
+Архитектура сети с назначенными IP - адресами:
 
 
-![image](https://github.com/SalminKHV/OTUS/assets/130359715/03f52ee6-a749-4464-88aa-baee688b7aa5)
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/27969d3f-2f88-4980-aded-34fb462d60fd)
 
 
 
@@ -178,7 +180,7 @@
 
 Настроим коммутаторы SW4 и SW5 на примере SW5
 
-Соpдадим и подпишем Vlan's, создадим и назначим ip-адрес Loopback - интерфейсу, затем на Vlan-интерфейсах назначим IP-адреса, организуем Port-Channel по LACP и Настроим протокол hsrp для клиентских подсетей 100.1.11.0/24 и 100.1.7.0/24. 
+Соpдадим и подпишем Vlan's, создадим и назначим ip-адрес Loopback - интерфейсу, затем на Vlan-интерфейсах назначим IP-адреса, организуем Port-Channel по LACP и Настроим протокол hsrp для клиентских подсетей 100.1.11.0/24 и 100.1.7.0/24. Создадим Vlan 100 и переместим в него неиспользуемые порты коммутатора, переведем их в режим доступа и выключим их физически, Vlan 99 назначим нативным.
 
 SW5(config)#vlan 2  
 SW5(config-vlan)#name for_e1/1 to_R12   
@@ -299,7 +301,7 @@ SW3(config-if)#ip add 100.1.11.4 255.255.255.0
 
 SW3(config-if)#no sh
 
-SW3(config-if)#int ra e0/0-2  
+SW3(config-if)#int ra e0/0-1  
 SW3(config-if-range)#sw tr e d  
 SW3(config-if-range)#sw m tr  
 SW3(config-if-range)#sw tr all vl 11  
@@ -307,6 +309,12 @@ SW3(config-if-range)#sw tr native vl 99
 SW3(config-if-range)#exi  
 SW3(config)#vlan 99  
 SW3(config-vlan)#name Native    
+
+SW3(config-vlan)#exi
+
+SW2(config)#int e0/2
+SW2(config-if)#sw m a
+SW2(config-if)#sw a vl 7
 
 SW3(config)#vlan 100  
 SW3(config-vlan)#name Parking_lot  
@@ -329,4 +337,131 @@ SW3(config)#do copy run st
 
 
 
-Добавить влан 100 нв sw4 и sw5 и неиспользуемые интерфейсы
+Настроим IP- адреса на VPC1 и VPC-7 и проверим доступность шлюза по умолчанию:
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/20906b2c-1332-4bda-b691-87d513d1ea44)
+
+
+
+Рассмотрим настройку роутеров на примере R12 согласно таблицы адресации:
+
+настроим имя роутера и время закрытия сессии при подключении по консоли:
+
+Router>en  
+Router#conf t  
+Enter configuration commands, one per line.  End with CNTL/Z.  
+Router(config)#host R12  
+R12(config)#li con 0  
+% Ambiguous command:  "li con 0"  
+R12(config)#line con 0  
+R12(config-line)#logg syn  
+R12(config-line)#exec-time 300  
+R12(config-line)#do copy run st  
+Destination filename [startup-config]?  
+Building configuration...  
+[OK]   
+R12(config-line)#exi  
+
+Настроим SUB-интерфейсы для портов смотрящих в сторону L-3 коммутаторов (уровень агрегации), и поднимем физические порты, на которых настроили sub-интерфейсы:  
+
+R12(config)#int e0/0.3  
+R12(config-subif)#encapsulation dot1Q 3  
+R12(config-subif)#ip address 100.1.1.16 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+R12(config-subif)#des  
+R12(config-subif)#description for VLAN3 to SW4  
+R12(config-subif)#no sh   
+R12(config-subif)#exi  
+R12(config)#int e0/0  
+R12(config-if)#no sh  
+R12(config-if)#  
+*Jul 22 00:46:55.933: %LINK-3-UPDOWN: Interface Ethernet0/0, changed state to up  
+*Jul 22 00:46:56.933: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/0, changed state to up  
+R12(config-if)#int e0/1.2  
+R12(config-subif)#en  
+R12(config-subif)#encapsulation dot 2  
+R12(config-subif)#ip add 100.1.1.18 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+R12(config-subif)#no sh  
+R12(config-subif)#int e0/1  
+R12(config-if)#no sh  
+R12(config-if)#  
+*Jul 22 00:48:18.563: %LINK-3-UPDOWN: Interface Ethernet0/1, changed state to up  
+*Jul 22 00:48:19.563: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/1, changed state to up  
+R12(config-if)#int e0/1.2  
+R12(config-subif)#des  
+R12(config-subif)#description For vlan 2 to SW5  
+R12(config-subif)#exi  
+R12(config)#int e0/2  
+R12(config-if)#ip add 100.1.1.5 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+R12(config-if)#des  
+R12(config-if)#description to R14  
+R12(config-if)#no sh  
+R12(config-if)#  
+*Jul 22 00:49:58.341: %LINK-3-UPDOWN: Interface Ethernet0/2, changed state to up  
+*Jul 22 00:49:59.345: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/2, changed state to up   
+
+Настроим физические интерфейсы роутера:    
+
+R12(config)#int e0/3  
+R12(config-if)#ip add 100.1.1.7 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+R12(config-if)#des  
+R12(config-if)#description to R15  
+R12(config-if)#no sh  
+R12(config-if)#  
+*Jul 22 00:50:47.372: %LINK-3-UPDOWN: Interface Ethernet0/3, changed state to up  
+*Jul 22 00:50:48.380: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet0/3, changed state to up  
+R12(config-if)#int e1/0  
+R12(config-if)#ip add 100.1.1.10 255.255.255.254  
+% Warning: use /31 mask on non point-to-point interface cautiously  
+R12(config-if)#des  
+R12(config-if)#description to R13   
+
+R12(config-if)#no sh  
+
+R12(config-if)#exi  
+
+Настроим Loopback - адрес для управления роутером:    
+
+
+
+R12(config)#int loopback 0  
+R12(config-if)#  
+*Jul 22 00:52:04.867: %LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up  
+R12(config-if)#ip add 100.1.0.12 255.255.255.255  
+
+R12(config-if)#  
+*Jul 22 00:52:42.792: %LINK-3-UPDOWN: Interface Ethernet1/0, changed state to up  
+*Jul 22 00:52:43.796: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1/0, changed state to up  
+
+Сохраним все произведенные настройки:  
+
+R12(config-if)#do copy run st  
+Destination filename [startup-config]?  
+Building configuration...  
+[OK]  
+
+
+
+На основе выше изложенных примерах настроим все остальное оборудование стенда.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
