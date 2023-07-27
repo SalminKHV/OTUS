@@ -1,0 +1,147 @@
+Building configuration...
+
+Current configuration : 2386 bytes
+!
+! Last configuration change at 08:32:12 UTC Mon Jul 24 2023
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW9
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description fo Management
+ ip address 204.2.0.9 255.255.255.255
+!
+interface Port-channel1
+ switchport trunk allowed vlan 14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Ethernet0/1
+ switchport trunk allowed vlan 14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Ethernet0/2
+ description Vlan8 for VPC8
+ switchport trunk allowed vlan 8
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+!
+interface Ethernet0/3
+ description Vlan6 to R17
+ switchport trunk allowed vlan 6
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+!
+interface Ethernet1/0
+ description Vlan 13 to R165
+ switchport trunk allowed vlan 13
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+!
+interface Ethernet1/1
+ switchport access vlan 100
+ switchport mode access
+ shutdown
+!
+interface Ethernet1/2
+ switchport access vlan 100
+ switchport mode access
+ shutdown
+!
+interface Ethernet1/3
+ switchport access vlan 100
+ switchport mode access
+ shutdown
+!
+interface Vlan6
+ description on e0/3 toR17
+ ip address 204.2.3.1 255.255.255.254
+!
+interface Vlan8
+ description on e0/3 to FOR VPC8
+ ip address 204.2.8.1 255.255.255.0
+!
+interface Vlan13
+ description on e1/0 toR16
+ ip address 204.2.3.5 255.255.255.254
+!
+interface Vlan14
+ description For LACP to SW10 on e0/0-1
+ ip address 204.2.3.8 255.255.255.254
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 300 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+end

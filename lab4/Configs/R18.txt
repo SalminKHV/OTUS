@@ -1,0 +1,111 @@
+Building configuration...
+
+Current configuration : 1081 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R18
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description for Management
+ ip address 204.2.0.18 255.255.255.255
+!
+interface Ethernet0/0
+ description to R16 S-Peteresberg
+ ip address 204.2.2.2 255.255.255.254
+!
+interface Ethernet0/1
+ description to R17 S-Petersberg
+ ip address 204.2.2.0 255.255.255.254
+!
+interface Ethernet0/2
+ description to R24 Triada
+ ip address 204.25.20.1 255.255.255.254
+!
+interface Ethernet0/3
+ description to R26 Triada
+ ip address 204.25.20.3 255.255.255.254
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end

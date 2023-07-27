@@ -1,0 +1,97 @@
+Building configuration...
+
+Current configuration : 1199 bytes
+!
+! Last configuration change at 02:08:13 UTC Thu Jul 27 2023
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW29
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description for VPC30
+ switchport access vlan 30
+ switchport mode access
+!
+interface Ethernet0/1
+ description for VPC31
+ switchport access vlan 31
+ switchport mode access
+!
+interface Ethernet0/2
+ switchport trunk allowed vlan 30,31
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 99
+ switchport mode trunk
+!
+interface Ethernet0/3
+ switchport access vlan 100
+ switchport mode access
+ shutdown
+!
+interface Vlan30
+ ip address 100.1.30.100 255.255.255.0
+!
+ip default-gateway 100.1.30.1
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 100.1.30.1
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 300 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+end
