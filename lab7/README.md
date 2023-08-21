@@ -46,3 +46,10 @@ R25(config-if-range)#ip router isis
 проверить в какой зоне находится наш роутер мы можем командой show Run или show clns:
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/37cb7118-9a38-4952-bdc7-c1f801189e1d)
+
+Отключим отношения Level2 между R23 и R25:
+
+R25(config-if)#int e0/0  
+R25(config-if)#isis circuit-type level-1  
+
+![image](https://github.com/SalminKHV/OTUS/assets/130359715/9c94e43d-1fe4-42f1-b05c-e4219c711631)
