@@ -27,13 +27,13 @@ R25(config)#router isis
 
 затем зададим ему название сетевого объекта (Network Entity Title) с указанием зооны "2222" и идентификатора роутера, совпадающий, с loopback (для R25   --- 5.20.0.25):
 
-R25(config-router)#net 49.2222.0005.0020.0.025.00
-R25(config-router)#exi
+R25(config-router)#net 49.2222.0005.0020.0.025.00  
+R25(config-router)#exi  
 
-Затем активируем IS-IS - протокол на портах маршрутизатора:
+Затем активируем IS-IS - протокол на портах маршрутизатора:  
 
-R25(config)#int ra e0/0-2, e1/0
-R25(config-if-range)#ip router isis
+R25(config)#int ra e0/0-2, e1/0  
+R25(config-if-range)#ip router isis  
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/10a746d3-17cc-4424-84c9-365ee127b5cb)
 
