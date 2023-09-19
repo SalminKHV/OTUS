@@ -74,6 +74,10 @@ SW9:
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/e1c41c2f-a8a5-45e2-97fa-c8eb23feefff)
 
+SW10:
+
+![image-20230919230406821](C:\Users\Gyper\AppData\Roaming\Typora\typora-user-images\image-20230919230406821.png)
+
 Пропишем на интерфейсах коммутаторов SW9 и SW10, к которым подключены VPC включим настройку passiv-interface в целях безопасности.
 
 ![image](https://github.com/SalminKHV/OTUS/assets/130359715/045920a8-745c-4044-b527-b35ecf3017ed)
