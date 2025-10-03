@@ -19,6 +19,7 @@ crypto key generate rsa general-keys label CA exportable modulus 2048
 crypto pki server CA   
 database level complete  
 no shut  
+
 Клиенты (VPN peers) R18, R15:  
 
 crypto key generate rsa label VPN modulus 2048  
